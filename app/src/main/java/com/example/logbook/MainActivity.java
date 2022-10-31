@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.logbook.databinding.ActivityMainBinding;
 import com.example.logbook.sqlite.DBHelper;
@@ -22,17 +24,27 @@ public class MainActivity extends AppCompatActivity {
     Handler mainHandler = new Handler();
     ProgressDialog progressDialog;
 
+    EditText url;
+    Button addbtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        url = findViewById(R.id.etURL);
+        addbtn = findViewById(R.id.addbtn);
+
         binding.addbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = binding.etURL.getText().toString();
-                new AddImage(url).start();
+                String urL = binding.etURL.getText().toString();
+                new AddImage(urL).start();
+
+                DBHelper helper = new DBHelper(MainActivity.this);
+                helper.addURL(url.getText().toString().trim());
+
             }
         });
 
@@ -77,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                     if (progressDialog.isShowing())
                         progressDialog.dismiss();
                     binding.imageView.setImageBitmap(bitmap);
-
                 }
             });
 
