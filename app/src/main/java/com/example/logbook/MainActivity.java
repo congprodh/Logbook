@@ -3,6 +3,7 @@ package com.example.logbook;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.view.View;
 
 import com.example.logbook.databinding.ActivityMainBinding;
+import com.example.logbook.sqlite.DBHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
                 new AddImage(url).start();
             }
         });
+
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        database.close();
+
     }
 
     class AddImage extends Thread{
